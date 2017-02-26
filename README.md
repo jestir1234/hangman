@@ -1,2 +1,4 @@
 # About
-Popular hangman game made using Sinatra. (will deploy to heroku when I get a chance)
+Popular hangman game made using Sinatra. 
+
+(Will deploy to heroku when I get a chance)
