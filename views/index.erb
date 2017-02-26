@@ -1,0 +1,137 @@
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+<html>
+  <head>
+    <style>
+    input[type="submit"] {display: block;
+                     right: 20px;
+                     bottom: 20px;
+                     background: #09c;
+                     color: #fff;
+                     height: 30px;
+                     width: 100px;
+                     -webkit-border-radius: 5px;
+                     -moz-border-radius: 5px;
+                     border-radius: 5px;
+                     font-family: 'Sansita', sans-serif;
+                     border: solid 1px black;
+                   opacity: .7}
+    input[type="text"] {border: 2px solid #aba6a6; width: 80px; height: 80px; font-size: 50px; margin-left: 10px; text-align:center;}
+
+    #letters{
+      font-size: 40px;
+      font-family: 'Indie Flower', cursive;
+      position: absolute;
+      margin-top: -200px;
+      width: 500px;
+    }
+    body{
+      background-color: #e5b861;
+      font-family: 'Indie Flower', cursive;
+      color: #81300d;
+      font-size: 20px;
+    }
+    #secret_word{
+      color: green;
+    }
+    #reveal{
+      position: absolute;
+      font-size: 50;
+      color: white;
+      margin-top: 300px;
+    }
+    #container{
+      position: fixed;
+      top: 350;
+      right: 100;
+      width: 500px;
+    }
+    h1{
+      position: absolute;
+      margin-top: -300px;
+      color: red;
+      font-size: 60px;
+    }
+    form{
+      position: absolute;
+      margin-left: 60px;
+    }
+    #guesses_left{
+      color: #ffb9b9;
+      text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
+    #hangmanImage{
+      position: fixed;
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+    opacity: .5;
+    }
+    </style>
+  </head>
+
+  <body>
+    <div id="hangmanImage">
+      <% case @@remaining_guesses %>
+      <% when 5 %>
+        <img src='rope-head.png' id="ropeImage" height="700" width="1300">
+      <% when 4 %>
+        <img src='rope-torso.png' id="ropeImage" height="700" width="1300">
+      <% when 3 %>
+        <img src='rope-torso-leftarm.png' id="ropeImage" height="700" width="1300">
+      <% when 2 %>
+        <img src='rope-torso-arms.png' id="ropeImage" height="700" width="1300">
+      <% when 1 %>
+        <img src='rope-torso-arms-leftleg.png' id="ropeImage" height="700" width="1300">
+      <% when 0 %>
+        <img src='rope-gameover.png' id="ropeImage" height="700" width="1300">
+      <% else %>
+      <img src='rope.png' id="ropeImage" height="700" width="1300">
+      <% end %>
+    </div>
+    <div id="container">
+        <h1> 🄷🄰🄽🄶🄼🄰🄽 </h1>
+      <div id="letters">
+        <% if @@remaining_guesses == 0 %><br\>
+         You're fired!
+        <% end %>
+        <% if hit %>
+        Nice, you got a hit!
+        <% elsif @@remaining_guesses.nil? %>
+        Guess the word!
+        <% elsif @@remaining_guesses > 0 %>
+        Drat! Wrong letter!
+        <% end %>
+        <br/>
+        <%= word_status %>
+      </div>
+    <form>
+      <% if @@remaining_guesses.nil? || @@remaining_guesses > 0 %>
+        Input a letter
+        <br/>
+        <input type="text", name="letter"/>
+      <% end %>
+      <br/>
+      <br/>
+      <% if !@@remaining_guesses.nil? %>
+        <% if @@remaining_guesses > 0 %>
+          <input type="submit", value="Guess!"/>
+        <% else %>
+          <input type="submit", name="reset", value="Reset!">
+        <% end %>
+      <% else %>
+      <input type="submit", name="reset", value="Guess!"/>
+      <% end %>
+      <br/>
+      <% if !@@remaining_guesses.nil? %>
+        <span id="guesses_left">Guesses Remaining: <%= @@remaining_guesses %></span>
+      <% end %>
+    </form>
+
+  </div>
+  <div id="reveal" >
+      <% if @@remaining_guesses == 0 %>
+        The secret word was <span id="secret_word"><%= secret_word.upcase %></span> !
+      <% end %>
+  </div>
+  </body>
+</html>
